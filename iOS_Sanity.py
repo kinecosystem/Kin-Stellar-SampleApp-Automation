@@ -20,24 +20,35 @@ class TestCases(unittest.TestCase):
         )
         cls._values = []
 
-    # Gets the test run is over
+    # Called when the test run is over
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
 
     # List of tests from <link to test cases>
-    def test_1_mainScreen(self):
+    def test_1_CreateAccount(self):
         testNetButton = self.driver.find_element_by_accessibility_id('TestNetButton')
         mainNetButton = self.driver.find_element_by_accessibility_id('MainNetButton')
+        createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
+        createWalletLable = self.driver.find_element_by_name('Create a Wallet')
+        address = self.driver.find_element_by_accessibility_id('AddressLable')
 
+        # Verify network buttons exist
         self.assertIsNotNone(testNetButton)
         self.assertIsNotNone(mainNetButton)
 
-    def test_2_failthis(self):
-        # This should fail
-        testNetButton = self.driver.find_element_by_accessibility_id('TestNetButton')
-        self.assertIsNone(None)
+        # Select Testnet
+        testNetButton.click()
 
+        # Verify account creation dialog shows up
+        self.assertIsNotNone(createAccountDialog)
+        createWalletLable.click()
+
+        # Account Screen
+        # Verify that the address is fine
+        self.assertIsNotNone(address)
+        self.assertEquals(len(address.get_attribute('value')),56)
+        self.assertEquals(address.get_attribute('value')[0],'G')
 
 
 def main():
