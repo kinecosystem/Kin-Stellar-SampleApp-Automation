@@ -19,19 +19,30 @@ class TestCases(unittest.TestCase):
             }
         )
         cls._values = []
+        # Timeout for element searching
+        # Official documentation says its in millisecond, but it actually works in seconds for me
+        cls.driver.implicitly_wait(10)
 
     # Called when the test run is over
     @classmethod
     def tearDownClass(cls):
+        # Re-open the app
+        cls.driver.reset()
+        # Enter the testnet account screen
+        testNetButton = cls.driver.find_element_by_accessibility_id('TestNetButton')
+        testNetButton.click()
+        # Delete your account
+        deleteAccountButton = cls.driver.find_element_by_accessibility_id('DeleteButton')
+        deleteAccountButton.click()
+        okButton = cls.driver.find_element_by_accessibility_id('OK')
+        okButton.click()
         cls.driver.quit()
+
 
     # List of tests from <link to test cases>
     def test_1_CreateAccount(self):
         testNetButton = self.driver.find_element_by_accessibility_id('TestNetButton')
         mainNetButton = self.driver.find_element_by_accessibility_id('MainNetButton')
-        createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
-        createWalletLable = self.driver.find_element_by_name('Create a Wallet')
-        address = self.driver.find_element_by_accessibility_id('AddressLable')
 
         # Verify network buttons exist
         self.assertIsNotNone(testNetButton)
@@ -41,11 +52,14 @@ class TestCases(unittest.TestCase):
         testNetButton.click()
 
         # Verify account creation dialog shows up
+        createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
+        createWalletLable = self.driver.find_element_by_name('Create a Wallet')
         self.assertIsNotNone(createAccountDialog)
         createWalletLable.click()
 
         # Account Screen
         # Verify that the address is fine
+        address = self.driver.find_element_by_accessibility_id('AddressLable')
         self.assertIsNotNone(address)
         self.assertEquals(len(address.get_attribute('value')),56)
         self.assertEquals(address.get_attribute('value')[0],'G')
