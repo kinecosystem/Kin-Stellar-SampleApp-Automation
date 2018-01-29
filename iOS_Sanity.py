@@ -59,20 +59,20 @@ class TestCases(unittest.TestCase):
 
         # Verify account creation dialog exists
         createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
-        createWalletlabel = self.driver.find_element_by_name('Create a Wallet')
-        createWalletlabel.click()
+        createWalletLabel = self.driver.find_element_by_name('Create a Wallet')
+        createWalletLabel.click()
 
         # Account Screen
         # Verify that the address is fine
-        address = self.driver.find_element_by_accessibility_id('Addresslabel')
+        address = self.driver.find_element_by_accessibility_id('AddressLabel')
         TestCases.myAddress = address.get_attribute('value')
         self.assertEquals(len(TestCases.myAddress), 56)
         self.assertEquals(TestCases.myAddress[0], 'G')
 
     def test_2_InitialBalanceTest(self):
-        # Verify balance labels show up
+        # Verify balance Labels show up
         balanceHeader = self.driver.find_element_by_accessibility_id('BalanceHeader')
-        balanceLabel = self.driver.find_element_by_accessibility_id('Balancelabel')
+        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
 
         # Verify that the balance does not exist
         time.sleep(3)  # Wait for the balance to refresh
@@ -100,11 +100,11 @@ class TestCases(unittest.TestCase):
 
         testNetButton.click()
         createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
-        createWalletlabel = self.driver.find_element_by_name('Create a Wallet')
-        createWalletlabel.click()
+        createWalletLabel = self.driver.find_element_by_name('Create a Wallet')
+        createWalletLabel.click()
 
         # Compare addresses
-        newAddress = self.driver.find_element_by_accessibility_id('Addresslabel').get_attribute('value')
+        newAddress = self.driver.find_element_by_accessibility_id('AddressLabel').get_attribute('value')
         self.assertNotEquals(TestCases.myAddress, newAddress)
         TestCases.badAddress = TestCases.myAddress
         TestCases.myAddress = newAddress
@@ -116,7 +116,7 @@ class TestCases(unittest.TestCase):
         time.sleep(20)
 
         # Verify that you got the Kin
-        balanceLabel = self.driver.find_element_by_accessibility_id('Balancelabel')
+        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
         self.assertEquals(balanceLabel.get_attribute('value'),'1,000.00 KIN')
         TestCases.myBalance = 1000
 
@@ -220,7 +220,7 @@ class TestCases(unittest.TestCase):
         refreshButton = self.driver.find_element_by_name('Refresh')
         refreshButton.click()
         time.sleep(3)
-        balanceLabel = self.driver.find_element_by_accessibility_id('Balancelabel')
+        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
         self.assertEquals(balanceLabel.get_attribute('value'),'650.00 KIN')
 
 
