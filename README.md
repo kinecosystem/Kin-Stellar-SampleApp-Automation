@@ -33,3 +33,7 @@ In addition to these python packages, this following steps are needed:
 ```
 brew install carthage
 ```
+
+# Example
+
+[![iOS Sanity](https://i.imgur.com/IMgzltX.jpg)](https://www.youtube.com/watch?v=wPzNuMOAea8 "iOS Sanity")
