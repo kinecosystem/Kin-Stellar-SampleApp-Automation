@@ -6,7 +6,7 @@ import json
 import os
 
 """
-TODO: Everything here is a copy paste of the iOS version, this still doesnt work
+TODO: Wait for sample app to complete in order to actually test
 """
 class TestCases(unittest.TestCase):
     # vars
@@ -46,8 +46,9 @@ class TestCases(unittest.TestCase):
     def findById(self,id):
         return self.driver.find_element_by_id('kin.sdk.core.sample:id/'+id)
 
-    def findByName(self,name):
-        return self.driver.find_element_by_name(name)
+    def findByText(self,text):
+        # yes, this is the right syntax
+        return self.driver.find_element_by_android_uiautomator('new UiSelector().text("{}")'.format(text))
 
     # List of tests from <link to test cases>
     def test_1_CreateAccount(self):
@@ -76,12 +77,12 @@ class TestCases(unittest.TestCase):
 
     def test_2_InitialBalanceTest(self):
         # Verify balance Labels show up
-        balanceHeader = self.driver.find_element_by_accessibility_id('BalanceHeader')
-        balanceLabel = self.driver.find_element_by_accessibility_id('balance')
+        balanceHeader = self.findByText('getBalance:')
+        balanceLabel = self.findById('balance')
 
         # Verify that the balance does not exist
         time.sleep(3)  # Wait for the balance to refresh
-        TestCases.myBalance = balanceLabel.get_attribute('value')
+        TestCases.myBalance = balanceLabel.get_attribute('text')
         self.assertEquals(TestCases.myBalance, 'Error')
 
         # Verify on horizon that the account does not exist:
@@ -91,38 +92,38 @@ class TestCases(unittest.TestCase):
 
     def test_3_DeleteAccount(self):
         # Verify delete button exists
-        deleteAccountButton = self.driver.find_element_by_accessibility_id('DeleteButton')
+        deleteAccountButton = self.findById('delete_account_btn')
 
         deleteAccountButton.click()
 
         # Verify deletion dialog appears
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        okButton = self.driver.find_element_by_id('android:id/button1')
 
         okButton.click()
 
         # Verify that you are back on the main screen
-        testNetButton = self.driver.find_element_by_accessibility_id('TestNetButton')
+        testNetButton = self.findById('btn_test_net')
 
         testNetButton.click()
-        createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
-        createWalletLabel = self.driver.find_element_by_name('Create a Wallet')
-        createWalletLabel.click()
+        createWalletButton = self.findById('btn_create_wallet')
+        createWalletButton.click()
 
         # Compare addresses
-        newAddress = self.driver.find_element_by_accessibility_id('AddressLabel').get_attribute('value')
+        newAddress = self.findById('public_key').get_attribute('text')
         self.assertNotEquals(TestCases.myAddress, newAddress)
         TestCases.badAddress = TestCases.myAddress
         TestCases.myAddress = newAddress
 
     def test_4_Onboarding(self):
         # Verify that the Get Kin button exists
-        getKinButton = self.driver.find_element_by_accessibility_id('GetKinButton')
+        getKinButton = self.findById('get_kin_btn')
         getKinButton.click()
         time.sleep(20)
 
         # Verify that you got the Kin
-        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
-        self.assertEquals(balanceLabel.get_attribute('value'),'1,000.00 KIN')
+        balanceLabel = self.findById('balance')
+        # TODO: Edit the 1000 KIN when app gets updated
+        self.assertEquals(balanceLabel.get_attribute('text'),'1,000.00 KIN')
         TestCases.myBalance = 1000
 
         # Verify with horizon
@@ -133,13 +134,13 @@ class TestCases(unittest.TestCase):
 
     def test_5_KinToEmpty(self):
         # Verify that the send button exists
-        sendTransactionButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendTransactionButton = self.findById('send_transaction_btn')
 
         sendTransactionButton.click()
 
         # Verify that the address and amount fields exists
-        addressField = self.driver.find_element_by_accessibility_id('AddressField')
-        amountField = self.driver.find_element_by_accessibility_id('AmountField')
+        addressField = self.findById('to_address_input')
+        amountField = self.findById('amount_input')
 
         addressField.click()
         addressField.clear()
@@ -149,18 +150,18 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
-        sendButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendButton = self.findById('send_transaction_btn')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.driver.find_element_by_name('Account not found')
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        errorDialog = self.findByText('Account not found')
+        okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
     def test_6_KinToNoTrust(self):
         # Verify that the address and amount fields exists
-        addressField = self.driver.find_element_by_accessibility_id('AddressField')
-        amountField = self.driver.find_element_by_accessibility_id('AmountField')
+        addressField = self.findById('to_address_input')
+        amountField = self.findById('amount_input')
 
         addressField.click()
         addressField.clear()
@@ -170,18 +171,18 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
-        sendButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendButton = self.findById('send_transaction_btn')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.driver.find_element_by_name('No KIN trustline')
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        errorDialog = self.findByText('No KIN trustline')
+        okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
     def test_7_InsufficientFunds(self):
         # Verify that the address and amount fields exists
-        addressField = self.driver.find_element_by_accessibility_id('AddressField')
-        amountField = self.driver.find_element_by_accessibility_id('AmountField')
+        addressField = self.findById('to_address_input')
+        amountField = self.findById('amount_input')
 
         addressField.click()
         addressField.clear()
@@ -191,18 +192,18 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('500000')
 
         # Verify that the send button exists
-        sendButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendButton = self.findById('send_transaction_btn')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.driver.find_element_by_name('Insufficient funds')
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        errorDialog = self.findByText('Insufficient funds')
+        okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
     def test_8_GoodTransaction(self):
         # Verify that the address and amount fields exists
-        addressField = self.driver.find_element_by_accessibility_id('AddressField')
-        amountField = self.driver.find_element_by_accessibility_id('AmountField')
+        addressField = self.findById('to_address_input')
+        amountField = self.findById('amount_input')
 
         addressField.click()
         addressField.clear()
@@ -212,21 +213,22 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
-        sendButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendButton = self.findById('send_transaction_btn')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.driver.find_element_by_name('Transaction Sent')
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        errorDialog = self.findByText('Transaction Sent')
+        okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
         self.driver.back()
 
         # Verify balance changed
-        refreshButton = self.driver.find_element_by_name('Refresh')
+        refreshButton = self.findById('refresh_btn')
         refreshButton.click()
         time.sleep(3)
-        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
-        self.assertEquals(balanceLabel.get_attribute('value'),'650.00 KIN')
+        balanceLabel = self.findById('balance')
+        # TODO: update 650 kin when app works
+        self.assertEquals(balanceLabel.get_attribute('text'),'650.00 KIN')
 
 
 
