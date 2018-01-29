@@ -24,7 +24,7 @@ class TestCases(unittest.TestCase):
                 'bundleId': bundleId,
                 'platformName': 'iOS',
                 'platformVersion': '11.2',
-                'deviceName': 'iPhone 7'  # TODO: name and version from somewhere else
+                'deviceName': 'iPhone 8'  # TODO: name and version from somewhere else
             }
         )
         cls._values = []
@@ -48,7 +48,6 @@ class TestCases(unittest.TestCase):
         time.sleep(3)
         cls.driver.quit()
 
-    # TODO: Change lable to label once app gets updated
     # List of tests from <link to test cases>
     def test_1_CreateAccount(self):
         # Verify network buttons exist
@@ -60,20 +59,20 @@ class TestCases(unittest.TestCase):
 
         # Verify account creation dialog exists
         createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
-        createWalletLable = self.driver.find_element_by_name('Create a Wallet')
-        createWalletLable.click()
+        createWalletLabel = self.driver.find_element_by_name('Create a Wallet')
+        createWalletLabel.click()
 
         # Account Screen
         # Verify that the address is fine
-        address = self.driver.find_element_by_accessibility_id('AddressLable')
+        address = self.driver.find_element_by_accessibility_id('AddressLabel')
         TestCases.myAddress = address.get_attribute('value')
         self.assertEquals(len(TestCases.myAddress), 56)
         self.assertEquals(TestCases.myAddress[0], 'G')
 
     def test_2_InitialBalanceTest(self):
-        # Verify balance labels show up
+        # Verify balance Labels show up
         balanceHeader = self.driver.find_element_by_accessibility_id('BalanceHeader')
-        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLable')
+        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
 
         # Verify that the balance does not exist
         time.sleep(3)  # Wait for the balance to refresh
@@ -101,11 +100,11 @@ class TestCases(unittest.TestCase):
 
         testNetButton.click()
         createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
-        createWalletLable = self.driver.find_element_by_name('Create a Wallet')
-        createWalletLable.click()
+        createWalletLabel = self.driver.find_element_by_name('Create a Wallet')
+        createWalletLabel.click()
 
         # Compare addresses
-        newAddress = self.driver.find_element_by_accessibility_id('AddressLable').get_attribute('value')
+        newAddress = self.driver.find_element_by_accessibility_id('AddressLabel').get_attribute('value')
         self.assertNotEquals(TestCases.myAddress, newAddress)
         TestCases.badAddress = TestCases.myAddress
         TestCases.myAddress = newAddress
@@ -117,7 +116,7 @@ class TestCases(unittest.TestCase):
         time.sleep(20)
 
         # Verify that you got the Kin
-        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLable')
+        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
         self.assertEquals(balanceLabel.get_attribute('value'),'1,000.00 KIN')
         TestCases.myBalance = 1000
 
@@ -221,7 +220,7 @@ class TestCases(unittest.TestCase):
         refreshButton = self.driver.find_element_by_name('Refresh')
         refreshButton.click()
         time.sleep(3)
-        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLable')
+        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
         self.assertEquals(balanceLabel.get_attribute('value'),'650.00 KIN')
 
 
