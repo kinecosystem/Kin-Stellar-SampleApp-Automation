@@ -48,31 +48,38 @@ class TestCases(unittest.TestCase):
         time.sleep(3)
         cls.driver.quit()
 
+    def findById(self,id):
+        return self.driver.find_element_by_accessibility_id(id)
+
+    def findByName(self,name):
+        return self.driver.find_element_by_name(name)
+
+
     # List of tests from <link to test cases>
     def test_1_CreateAccount(self):
         # Verify network buttons exist
-        testNetButton = self.driver.find_element_by_accessibility_id('TestNetButton')
-        mainNetButton = self.driver.find_element_by_accessibility_id('MainNetButton')
+        testNetButton = self.findById('TestNetButton')
+        mainNetButton = self.findById('MainNetButton')
 
         # Select Testnet
         testNetButton.click()
 
         # Verify account creation dialog exists
-        createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
-        createWalletLabel = self.driver.find_element_by_name('Create a Wallet')
+        createAccountDialog = self.findByName('No Test Net Wallet Yet')
+        createWalletLabel = self.findByName('Create a Wallet')
         createWalletLabel.click()
 
         # Account Screen
         # Verify that the address is fine
-        address = self.driver.find_element_by_accessibility_id('AddressLabel')
+        address = self.findById('AddressLabel')
         TestCases.myAddress = address.get_attribute('value')
         self.assertEquals(len(TestCases.myAddress), 56)
         self.assertEquals(TestCases.myAddress[0], 'G')
 
     def test_2_InitialBalanceTest(self):
         # Verify balance Labels show up
-        balanceHeader = self.driver.find_element_by_accessibility_id('BalanceHeader')
-        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
+        balanceHeader = self.findById('BalanceHeader')
+        balanceLabel = self.findById('BalanceLabel')
 
         # Verify that the balance does not exist
         time.sleep(3)  # Wait for the balance to refresh
@@ -86,37 +93,37 @@ class TestCases(unittest.TestCase):
 
     def test_3_DeleteAccount(self):
         # Verify delete button exists
-        deleteAccountButton = self.driver.find_element_by_accessibility_id('DeleteButton')
+        deleteAccountButton = self.findById('DeleteButton')
 
         deleteAccountButton.click()
 
         # Verify deletion dialog appears
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        okButton = self.findById('OK')
 
         okButton.click()
 
         # Verify that you are back on the main screen
-        testNetButton = self.driver.find_element_by_accessibility_id('TestNetButton')
+        testNetButton = self.findById('TestNetButton')
 
         testNetButton.click()
-        createAccountDialog = self.driver.find_element_by_name('No Test Net Wallet Yet')
-        createWalletLabel = self.driver.find_element_by_name('Create a Wallet')
+        createAccountDialog = self.findByName('No Test Net Wallet Yet')
+        createWalletLabel = self.findByName('Create a Wallet')
         createWalletLabel.click()
 
         # Compare addresses
-        newAddress = self.driver.find_element_by_accessibility_id('AddressLabel').get_attribute('value')
+        newAddress = self.findById('AddressLabel').get_attribute('value')
         self.assertNotEquals(TestCases.myAddress, newAddress)
         TestCases.badAddress = TestCases.myAddress
         TestCases.myAddress = newAddress
 
     def test_4_Onboarding(self):
         # Verify that the Get Kin button exists
-        getKinButton = self.driver.find_element_by_accessibility_id('GetKinButton')
+        getKinButton = self.findById('GetKinButton')
         getKinButton.click()
         time.sleep(20)
 
         # Verify that you got the Kin
-        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
+        balanceLabel = self.findById('BalanceLabel')
         self.assertEquals(balanceLabel.get_attribute('value'),'1,000.00 KIN')
         TestCases.myBalance = 1000
 
@@ -128,13 +135,13 @@ class TestCases(unittest.TestCase):
 
     def test_5_KinToEmpty(self):
         # Verify that the send button exists
-        sendTransactionButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendTransactionButton = self.findById('SendButton')
 
         sendTransactionButton.click()
 
         # Verify that the address and amount fields exists
-        addressField = self.driver.find_element_by_accessibility_id('AddressField')
-        amountField = self.driver.find_element_by_accessibility_id('AmountField')
+        addressField = self.findById('AddressField')
+        amountField = self.findById('AmountField')
 
         addressField.click()
         addressField.clear()
@@ -144,18 +151,18 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
-        sendButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendButton = self.findById('SendButton')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.driver.find_element_by_name('Account not found')
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        errorDialog = self.findByName('Account not found')
+        okButton = self.findById('OK')
         okButton.click()
 
     def test_6_KinToNoTrust(self):
         # Verify that the address and amount fields exists
-        addressField = self.driver.find_element_by_accessibility_id('AddressField')
-        amountField = self.driver.find_element_by_accessibility_id('AmountField')
+        addressField = self.findById('AddressField')
+        amountField = self.findById('AmountField')
 
         addressField.click()
         addressField.clear()
@@ -165,18 +172,18 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
-        sendButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendButton = self.findById('SendButton')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.driver.find_element_by_name('No KIN trustline')
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        errorDialog = self.findByName('No KIN trustline')
+        okButton = self.findById('OK')
         okButton.click()
 
     def test_7_InsufficientFunds(self):
         # Verify that the address and amount fields exists
-        addressField = self.driver.find_element_by_accessibility_id('AddressField')
-        amountField = self.driver.find_element_by_accessibility_id('AmountField')
+        addressField = self.findById('AddressField')
+        amountField = self.findById('AmountField')
 
         addressField.click()
         addressField.clear()
@@ -186,18 +193,18 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('500000')
 
         # Verify that the send button exists
-        sendButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendButton = self.findById('SendButton')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.driver.find_element_by_name('Insufficient funds')
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        errorDialog = self.findByName('Insufficient funds')
+        okButton = self.findById('OK')
         okButton.click()
 
     def test_8_GoodTransaction(self):
         # Verify that the address and amount fields exists
-        addressField = self.driver.find_element_by_accessibility_id('AddressField')
-        amountField = self.driver.find_element_by_accessibility_id('AmountField')
+        addressField = self.findById('AddressField')
+        amountField = self.findById('AmountField')
 
         addressField.click()
         addressField.clear()
@@ -207,20 +214,20 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
-        sendButton = self.driver.find_element_by_accessibility_id('SendButton')
+        sendButton = self.findById('SendButton')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.driver.find_element_by_name('Transaction Sent')
-        okButton = self.driver.find_element_by_accessibility_id('OK')
+        errorDialog = self.findByName('Transaction Sent')
+        okButton = self.findById('OK')
         okButton.click()
         self.driver.back()
 
         # Verify balance changed
-        refreshButton = self.driver.find_element_by_name('Refresh')
+        refreshButton = self.findByName('Refresh')
         refreshButton.click()
         time.sleep(3)
-        balanceLabel = self.driver.find_element_by_accessibility_id('BalanceLabel')
+        balanceLabel = self.findById('BalanceLabel')
         self.assertEquals(balanceLabel.get_attribute('value'),'650.00 KIN')
 
 
