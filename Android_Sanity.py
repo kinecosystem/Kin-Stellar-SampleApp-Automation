@@ -16,20 +16,30 @@ class TestCases(unittest.TestCase):
     noTrustAddress = 'GANFGTTCZL3D477BSCPR4RMUCX6RLERFUMOKZQYWK22ZFECZ3C7WXIZK'
     qaAccount = 'GBTVB43S7PX2EZKXTHEXAGLVTRBXDOZY2V3LOYN2PSWRIOAFPRMUO2WA'
 
+    # Desired Capabilities - Change this to whatever you are using
+    appPackage = 'kin.sdk.core.sample'
+    appActivity = '.ChooseNetworkActivity'
+    platformName = 'Android'
+    platformVersion = '7.1'
+    deviceName = 'Nexus 5X'
+    server = 'http://127.0.0.1:4723/wd/hub'
+
     # Set up Appium and the app
     @classmethod
     def setUpClass(cls):
-        # Sample App should be already installed on the emulator # TODO: add option to install
-        appPackage = 'kin.sdk.core.sample'
-        appActivity =  '.ChooseNetworkActivity'
+        # Verify that horizon is up
+        if os.system('curl https://horizon-testnet.stellar.org') != 0:
+            quit()
+        # Sample App should be already installed on the emulator/device
+
         cls.driver = webdriver.Remote(
-            command_executor='http://127.0.0.1:4723/wd/hub',  # Run on local server
+            command_executor=TestCases.server,  # Run on local server
             desired_capabilities={
-                'appPackage': appPackage,
-                'appActivity': appActivity,
-                'platformName': 'Android',
-                'platformVersion': '7.1',
-                'deviceName': 'Nexus 5X'  # TODO: name and version from somewhere else
+                'appPackage': TestCases.appPackage,
+                'appActivity': TestCases.appActivity,
+                'platformName': TestCases.platformName,
+                'platformVersion': TestCases.platformVersion,
+                'deviceName': TestCases.deviceName
             }
         )
         cls._values = []
@@ -118,6 +128,7 @@ class TestCases(unittest.TestCase):
         # Verify that the Get Kin button exists
         getKinButton = self.findById('get_kin_btn')
         getKinButton.click()
+        # Wait enough time for the transaction to go through
         time.sleep(20)
 
         # Verify that you got the Kin

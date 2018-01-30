@@ -3,6 +3,7 @@ import unittest
 import time
 import requests
 import json
+import os
 
 
 class TestCases(unittest.TestCase):
@@ -13,18 +14,27 @@ class TestCases(unittest.TestCase):
     noTrustAddress = 'GANFGTTCZL3D477BSCPR4RMUCX6RLERFUMOKZQYWK22ZFECZ3C7WXIZK'
     qaAccount = 'GBTVB43S7PX2EZKXTHEXAGLVTRBXDOZY2V3LOYN2PSWRIOAFPRMUO2WA'
 
+    # Desired Capabilities:
+    bundleId = 'com.kinfoundation.KinSampleApp'
+    platformName = 'iOS'
+    platformVersion = '11.2'
+    deviceName = 'iPhone 8'
+    server = 'http://127.0.0.1:4723/wd/hub'
+
     # Set up Appium and the app
     @classmethod
     def setUpClass(cls):
-        # Sample App should be already installed on the emulator # TODO: add option to install
-        bundleId = 'com.kinfoundation.KinSampleApp'
+        # Verify that horizon is up
+        if os.system('curl https://horizon-testnet.stellar.org') != 0:
+            quit()
+        # Sample App should be already installed on the emulator
         cls.driver = webdriver.Remote(
-            command_executor='http://127.0.0.1:4723/wd/hub',  # Run on local server
+            command_executor= TestCases.server,  # Run on local server
             desired_capabilities={
-                'bundleId': bundleId,
-                'platformName': 'iOS',
-                'platformVersion': '11.2',
-                'deviceName': 'iPhone 8'  # TODO: name and version from somewhere else
+                'bundleId': TestCases.bundleId,
+                'platformName': TestCases.platformName,
+                'platformVersion': TestCases.platformVersion,
+                'deviceName': TestCases.deviceName
             }
         )
         cls._values = []
