@@ -20,10 +20,9 @@ pytest -v -x --no-print-logs iOS/Android_Sanity.py
 
 Developed on Python  3.6
 
-Needed dependencies are all in the "requirements.txt" file  
-Use this to install them
+Python dependecies:
 ```
-pip3 install -r requirements.txt  
+pip3 install Appium-Python-Client requests pytest
 ```  
 In addition to these python packages, this following steps are needed:
 * Install Appium - [Download](https://github.com/appium/appium-desktop/releases/tag/v1.3.1)
