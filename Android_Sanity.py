@@ -74,11 +74,6 @@ class TestCases(unittest.TestCase):
         createWalletButton.click()
 
         # Account Screen
-        # TODO: Remove this after the app is fixed
-        ok = self.driver.find_element_by_id('android:id/button1')
-        ok.click()
-
-
         # Verify that the address is fine
         address = self.findById('public_key')
         TestCases.myAddress = address.get_attribute('text')
@@ -165,7 +160,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Account not found')
+        errorDialog = self.findByText('Account {} was not found'.format(TestCases.badAddress))
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
@@ -186,7 +181,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('No KIN trustline')
+        errorDialog = self.findByText('Account {} is not activated'.format(TestCases.noTrustAddress))
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
