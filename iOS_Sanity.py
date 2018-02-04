@@ -64,8 +64,7 @@ class TestCases(unittest.TestCase):
     def findByName(self,name):
         return self.driver.find_element_by_name(name)
 
-
-    # List of tests from <link to test cases>
+    # List of tests from <https://goo.gl/eBREhe>
     def test_1_CreateAccount(self):
         # Verify network buttons exist
         testNetButton = self.findById('TestNetButton')

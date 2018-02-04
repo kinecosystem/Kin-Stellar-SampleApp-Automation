@@ -60,7 +60,7 @@ class TestCases(unittest.TestCase):
         # yes, this is the right syntax
         return self.driver.find_element_by_android_uiautomator('new UiSelector().text("{}")'.format(text))
 
-    # List of tests from <link to test cases>
+    # List of tests from <https://goo.gl/eBREhe>
     def test_1_CreateAccount(self):
         # Verify network buttons exist
         testNetButton = self.findById('btn_test_net')
