@@ -201,7 +201,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Insufficient funds')
+        errorDialog = self.findByText('Transaction failed with the error = op_underfunded')
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
@@ -222,17 +222,18 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Transaction Sent')
+        errorDialog = self.driver.find_element_by_android_uiautomator\
+            ('new UiSelector().textContains("Transaction id")')
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
-        self.driver.back()
+        self.driver.find_element_by_accessibility_id('Navigate up').click() # Back button
 
         # Verify balance changed
         refreshButton = self.findById('refresh_btn')
         refreshButton.click()
         time.sleep(3)
         balanceLabel = self.findById('balance')
-        self.assertEquals(balanceLabel.get_attribute('text'),'5650.0000000 KIN')
+        self.assertEquals(balanceLabel.get_attribute('text'),'5650.0000000')
 
 
 
