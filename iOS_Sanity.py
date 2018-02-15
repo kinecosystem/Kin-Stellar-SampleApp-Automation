@@ -9,7 +9,6 @@ import os
 class TestCases(unittest.TestCase):
     # vars
     myAddress = ''
-    myBalance = ''
     badAddress = ''
     noTrustAddress = 'GANFGTTCZL3D477BSCPR4RMUCX6RLERFUMOKZQYWK22ZFECZ3C7WXIZK'
     qaAccount = 'GBDUPSZP4APH3PNFIMYMTHIGCQQ2GKTPRBDTPCORALYRYJZJ35O2LOBL'
@@ -92,8 +91,8 @@ class TestCases(unittest.TestCase):
 
         # Verify that the balance does not exist
         time.sleep(3)  # Wait for the balance to refresh
-        TestCases.myBalance = balanceLabel.get_attribute('value')
-        self.assertEquals(TestCases.myBalance, 'Error')
+        myBalance = balanceLabel.get_attribute('value')
+        self.assertEquals(myBalance, 'Error')
 
         # Verify on horizon that the account does not exist:
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
@@ -134,7 +133,6 @@ class TestCases(unittest.TestCase):
         # Verify that you got the Kin
         balanceLabel = self.findById('BalanceLabel')
         self.assertEquals(balanceLabel.get_attribute('value'),'6,000.00 KIN')
-        TestCases.myBalance = 6000
 
         # Verify with horizon
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
