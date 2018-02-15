@@ -11,10 +11,9 @@ TODO: Wait for sample app to complete in order to actually test
 class TestCases(unittest.TestCase):
     # vars
     myAddress = ''
-    myBalance = ''
     badAddress = ''
     noTrustAddress = 'GANFGTTCZL3D477BSCPR4RMUCX6RLERFUMOKZQYWK22ZFECZ3C7WXIZK'
-    qaAccount = 'GBTVB43S7PX2EZKXTHEXAGLVTRBXDOZY2V3LOYN2PSWRIOAFPRMUO2WA'
+    qaAccount = 'GBDUPSZP4APH3PNFIMYMTHIGCQQ2GKTPRBDTPCORALYRYJZJ35O2LOBL'
 
     # Desired Capabilities - Change this to whatever you are using
     appPackage = 'kin.sdk.core.sample'
@@ -87,8 +86,8 @@ class TestCases(unittest.TestCase):
 
         # Verify that the balance does not exist
         time.sleep(3)  # Wait for the balance to refresh
-        TestCases.myBalance = balanceLabel.get_attribute('text')
-        self.assertEquals(TestCases.myBalance, 'Error')
+        myBalance = balanceLabel.get_attribute('text')
+        self.assertEquals(myBalance, 'Error')
 
         # Verify on horizon that the account does not exist:
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
@@ -128,15 +127,13 @@ class TestCases(unittest.TestCase):
 
         # Verify that you got the Kin
         balanceLabel = self.findById('balance')
-        # TODO: Edit the 1000 KIN when app gets updated
-        self.assertEquals(balanceLabel.get_attribute('text'),'1,000.00 KIN')
-        TestCases.myBalance = 1000
+        self.assertEquals(balanceLabel.get_attribute('text'),'6000.0000000')
 
         # Verify with horizon
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
         response = json.loads(requests.get(url).text)
         balances = response['balances']
-        self.assertEquals(balances[0]['balance'], '1000.0000000')
+        self.assertEquals(balances[0]['balance'], '6000.0000000')
 
     def test_5_KinToEmpty(self):
         # Verify that the send button exists
@@ -202,7 +199,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Insufficient funds')
+        errorDialog = self.findByText('Transaction failed with the error = op_underfunded')
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
@@ -223,18 +220,18 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Transaction Sent')
+        errorDialog = self.driver.find_element_by_android_uiautomator\
+            ('new UiSelector().textContains("Transaction id")')
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
-        self.driver.back()
+        self.driver.find_element_by_accessibility_id('Navigate up').click() # Back button
 
         # Verify balance changed
         refreshButton = self.findById('refresh_btn')
         refreshButton.click()
         time.sleep(3)
         balanceLabel = self.findById('balance')
-        # TODO: update 650 kin when app works
-        self.assertEquals(balanceLabel.get_attribute('text'),'650.00 KIN')
+        self.assertEquals(balanceLabel.get_attribute('text'),'5650.0000000')
 
 
 

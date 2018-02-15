@@ -9,10 +9,9 @@ import os
 class TestCases(unittest.TestCase):
     # vars
     myAddress = ''
-    myBalance = ''
     badAddress = ''
     noTrustAddress = 'GANFGTTCZL3D477BSCPR4RMUCX6RLERFUMOKZQYWK22ZFECZ3C7WXIZK'
-    qaAccount = 'GBTVB43S7PX2EZKXTHEXAGLVTRBXDOZY2V3LOYN2PSWRIOAFPRMUO2WA'
+    qaAccount = 'GBDUPSZP4APH3PNFIMYMTHIGCQQ2GKTPRBDTPCORALYRYJZJ35O2LOBL'
 
     # Desired Capabilities:
     bundleId = 'com.kinfoundation.KinSampleApp'
@@ -92,8 +91,8 @@ class TestCases(unittest.TestCase):
 
         # Verify that the balance does not exist
         time.sleep(3)  # Wait for the balance to refresh
-        TestCases.myBalance = balanceLabel.get_attribute('value')
-        self.assertEquals(TestCases.myBalance, 'Error')
+        myBalance = balanceLabel.get_attribute('value')
+        self.assertEquals(myBalance, 'Error')
 
         # Verify on horizon that the account does not exist:
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
@@ -133,14 +132,13 @@ class TestCases(unittest.TestCase):
 
         # Verify that you got the Kin
         balanceLabel = self.findById('BalanceLabel')
-        self.assertEquals(balanceLabel.get_attribute('value'),'1,000.00 KIN')
-        TestCases.myBalance = 1000
+        self.assertEquals(balanceLabel.get_attribute('value'),'6,000.00 KIN')
 
         # Verify with horizon
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
         response = json.loads(requests.get(url).text)
         balances = response['balances']
-        self.assertEquals(balances[0]['balance'], '1000.0000000')
+        self.assertEquals(balances[0]['balance'], '6000.0000000')
 
     def test_5_KinToEmpty(self):
         # Verify that the send button exists
@@ -164,7 +162,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('Account not found')
+        errorDialog = self.findByName('Payment failed')
         okButton = self.findById('OK')
         okButton.click()
 
@@ -185,7 +183,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('No KIN trustline')
+        errorDialog = self.findByName('Payment failed')
         okButton = self.findById('OK')
         okButton.click()
 
@@ -206,7 +204,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('Insufficient funds')
+        errorDialog = self.findByName('Payment failed')
         okButton = self.findById('OK')
         okButton.click()
 
@@ -237,7 +235,7 @@ class TestCases(unittest.TestCase):
         refreshButton.click()
         time.sleep(3)
         balanceLabel = self.findById('BalanceLabel')
-        self.assertEquals(balanceLabel.get_attribute('value'),'650.00 KIN')
+        self.assertEquals(balanceLabel.get_attribute('value'),'5,650.00 KIN')
 
 
 
