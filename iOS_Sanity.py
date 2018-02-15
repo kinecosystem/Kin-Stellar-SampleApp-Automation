@@ -162,7 +162,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('Account not found')
+        errorDialog = self.findByName('Payment failed')
         okButton = self.findById('OK')
         okButton.click()
 
@@ -183,7 +183,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('No KIN trustline')
+        errorDialog = self.findByName('Payment failed')
         okButton = self.findById('OK')
         okButton.click()
 
@@ -204,7 +204,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('Insufficient funds')
+        errorDialog = self.findByName('Payment failed')
         okButton = self.findById('OK')
         okButton.click()
 
