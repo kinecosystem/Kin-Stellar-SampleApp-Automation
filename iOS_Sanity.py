@@ -195,8 +195,8 @@ class TestCases(unittest.TestCase):
         addressField.click()
         addressField.clear()
         addressField.send_keys(TestCases.qaAccount)
-        amountField.clear()
         amountField.click()
+        amountField.clear()
         amountField.send_keys('500000')
 
         # Verify that the send button exists
@@ -208,17 +208,48 @@ class TestCases(unittest.TestCase):
         okButton = self.findById('OK')
         okButton.click()
 
-    def test_8_GoodTransaction(self):
+    def test_8_LongMemo(self):
         # Verify that the address and amount fields exists
         addressField = self.findById('AddressField')
         amountField = self.findById('AmountField')
+        memoField = self.findById('MemoField')
 
         addressField.click()
         addressField.clear()
         addressField.send_keys(TestCases.qaAccount)
-        amountField.clear()
         amountField.click()
+        amountField.clear()
         amountField.send_keys('350')
+        memoField.click()
+        memoField.clear()
+
+        # Memo should be restricted to 32 characters
+        memoField.send_keys('a'*50)
+
+        # Verify that the send button exists
+        sendButton = self.findById('SendButton')
+        sendButton.click()
+
+        # Verify that the transaction failed
+        errorDialog = self.findByName('Error')
+        okButton = self.findById('OK')
+        okButton.click()
+
+    def test_9_GoodTransaction(self):
+        # Verify that the address and amount fields exists
+        addressField = self.findById('AddressField')
+        amountField = self.findById('AmountField')
+        memoField = self.findById('MemoField')
+
+        addressField.click()
+        addressField.clear()
+        addressField.send_keys(TestCases.qaAccount)
+        amountField.click()
+        amountField.clear()
+        amountField.send_keys('350')
+        memoField.click()
+        memoField.clear()
+        memoField.send_keys('Hello stellar')
 
         # Verify that the send button exists
         sendButton = self.findById('SendButton')
@@ -231,11 +262,20 @@ class TestCases(unittest.TestCase):
         self.driver.back()
 
         # Verify balance changed
-        refreshButton = self.findByName('Refresh')
-        refreshButton.click()
         time.sleep(3)
         balanceLabel = self.findById('BalanceLabel')
         self.assertEquals(balanceLabel.get_attribute('value'),'5,650.00 KIN')
+
+    # Since this would be test_10 it would start before test_1_
+    # Its the last test, so I will leave it like that
+    def test_9a_RecentHistory(self):
+
+        # This page is dynamically generated, so we need to search elements with labels
+
+        recentButton = self.findById('RecentButton')
+        recentButton.click()
+        firstTX = self.findByName('6000')
+        latestTX = self.findByName('350')
 
 
 
