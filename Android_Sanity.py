@@ -16,7 +16,7 @@ class TestCases(unittest.TestCase):
     qaAccount = 'GBDUPSZP4APH3PNFIMYMTHIGCQQ2GKTPRBDTPCORALYRYJZJ35O2LOBL'
 
     # Desired Capabilities - Change this to whatever you are using
-    appPackage = 'kin.sdk.core.sample'
+    appPackage = 'kin.core.sample'
     appActivity = '.ChooseNetworkActivity'
     platformName = 'Android'
     platformVersion = '7.1'
@@ -53,7 +53,7 @@ class TestCases(unittest.TestCase):
         os.system('adb shell pm clear kin.sdk.core.sample')
 
     def findById(self,id):
-        return self.driver.find_element_by_id('kin.sdk.core.sample:id/'+id)
+        return self.driver.find_element_by_id('kin.core.sample:id/'+id)
 
     def findByText(self,text):
         # yes, this is the right syntax
@@ -83,11 +83,15 @@ class TestCases(unittest.TestCase):
         # Verify balance Labels show up
         balanceHeader = self.findByText('getBalance:')
         balanceLabel = self.findById('balance')
+        statusLable = self.findById('status')
 
         # Verify that the balance does not exist
         time.sleep(3)  # Wait for the balance to refresh
         myBalance = balanceLabel.get_attribute('text')
         self.assertEquals(myBalance, 'Error')
+        myStatus = statusLable.get_attribute('text')
+        self.assertEquals(myStatus, 'Not Created')
+
 
         # Verify on horizon that the account does not exist:
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
@@ -129,6 +133,9 @@ class TestCases(unittest.TestCase):
         balanceLabel = self.findById('balance')
         self.assertEquals(balanceLabel.get_attribute('text'),'6000.0000000')
 
+        statusLable = self.findById('status')
+        self.assertEquals(statusLable.get_attribute('text'),'Activated')
+
         # Verify with horizon
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
         response = json.loads(requests.get(url).text)
@@ -153,6 +160,7 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
+        self.driver.hide_keyboard()
         sendButton = self.findById('send_transaction_btn')
         sendButton.click()
 
@@ -174,6 +182,7 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
+        self.driver.hide_keyboard()
         sendButton = self.findById('send_transaction_btn')
         sendButton.click()
 
@@ -195,11 +204,12 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('500000')
 
         # Verify that the send button exists
+        self.driver.hide_keyboard()
         sendButton = self.findById('send_transaction_btn')
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Transaction failed with the error = op_underfunded')
+        errorDialog = self.findByText('Not enough kin to perform the transaction')
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
@@ -216,6 +226,7 @@ class TestCases(unittest.TestCase):
         amountField.send_keys('350')
 
         # Verify that the send button exists
+        self.driver.hide_keyboard()
         sendButton = self.findById('send_transaction_btn')
         sendButton.click()
 
