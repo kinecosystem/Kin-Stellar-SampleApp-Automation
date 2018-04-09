@@ -20,7 +20,7 @@ class TestCases(unittest.TestCase):
     appActivity = '.ChooseNetworkActivity'
     platformName = 'Android'
     platformVersion = '4.2'
-    deviceName = 'android-17'
+    deviceName = 'emulator-5554'
     server = 'http://127.0.0.1:4723/wd/hub'
 
     # Set up Appium and the app
