@@ -19,8 +19,8 @@ class TestCases(unittest.TestCase):
     appPackage = 'kin.core.sample'
     appActivity = '.ChooseNetworkActivity'
     platformName = 'Android'
-    platformVersion = '7.1'
-    deviceName = 'Nexus 5X'
+    platformVersion = '4.2'
+    deviceName = 'emulator-5554'
     server = 'http://127.0.0.1:4723/wd/hub'
 
     # Set up Appium and the app
