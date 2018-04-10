@@ -127,7 +127,7 @@ class TestCases(unittest.TestCase):
         getKinButton = self.findById('get_kin_btn')
         getKinButton.click()
         # Wait enough time for the transaction to go through
-        time.sleep(20)
+        time.sleep(30)
 
         # Verify that you got the Kin
         balanceLabel = self.findById('balance')
