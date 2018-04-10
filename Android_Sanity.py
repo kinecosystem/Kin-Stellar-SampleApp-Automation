@@ -19,7 +19,7 @@ class TestCases(unittest.TestCase):
     appPackage = 'kin.core.sample'
     appActivity = '.ChooseNetworkActivity'
     platformName = 'Android'
-    platformVersion = '4.2'
+    platformVersion = '5.0'
     deviceName = 'emulator-5554'
     server = 'http://127.0.0.1:4723/wd/hub'
 
