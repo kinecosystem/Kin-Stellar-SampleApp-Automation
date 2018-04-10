@@ -85,12 +85,12 @@ class TestCases(unittest.TestCase):
         self.assertEquals(TestCases.myAddress[0], 'G')
 
     def test_2_InitialBalanceTest(self):
+        time.sleep(7)  # Wait for the balance to refresh
         # Verify balance Labels show up
         balanceHeader = self.findById('BalanceHeader')
         balanceLabel = self.findById('BalanceLabel')
 
         # Verify that the balance does not exist
-        time.sleep(3)  # Wait for the balance to refresh
         myBalance = balanceLabel.get_attribute('value')
         self.assertEquals(myBalance, 'Error')
 
@@ -162,7 +162,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('Payment failed')
+        errorDialog = self.findByName('Error')
         okButton = self.findById('OK')
         okButton.click()
 
@@ -183,7 +183,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('Payment failed')
+        errorDialog = self.findByName('Error')
         okButton = self.findById('OK')
         okButton.click()
 
@@ -204,7 +204,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByName('Payment failed')
+        errorDialog = self.findByName('Error')
         okButton = self.findById('OK')
         okButton.click()
 

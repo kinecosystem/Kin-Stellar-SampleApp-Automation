@@ -209,7 +209,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Not enough kin to perform the transaction')
+        errorDialog = self.findByText('Not enough kin to perform the transaction.')
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
