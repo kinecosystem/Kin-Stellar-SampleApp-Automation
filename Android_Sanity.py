@@ -127,14 +127,14 @@ class TestCases(unittest.TestCase):
         getKinButton = self.findById('get_kin_btn')
         getKinButton.click()
         # Wait enough time for the transaction to go through
-        time.sleep(30)
+        time.sleep(20)
 
         # Verify that you got the Kin
         balanceLabel = self.findById('balance')
         self.assertEquals(balanceLabel.get_attribute('text'),'6000.0000000')
 
-        statusLable = self.findById('status')
-        self.assertEquals(statusLable.get_attribute('text'),'Activated')
+        # Verify account status changed
+        self.findByText('Activated')
 
         # Verify with horizon
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
