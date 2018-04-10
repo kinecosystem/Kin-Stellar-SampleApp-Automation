@@ -127,7 +127,7 @@ class TestCases(unittest.TestCase):
         getKinButton = self.findById('get_kin_btn')
         getKinButton.click()
         # Wait enough time for the transaction to go through
-        time.sleep(20)
+        time.sleep(30)
 
         # Verify that you got the Kin
         balanceLabel = self.findById('balance')
@@ -209,7 +209,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Not enough kin to perform the transaction')
+        errorDialog = self.findByText('Not enough kin to perform the transaction.')
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
