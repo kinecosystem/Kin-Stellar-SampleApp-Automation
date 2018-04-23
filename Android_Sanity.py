@@ -19,7 +19,7 @@ class TestCases(unittest.TestCase):
     appPackage = 'kin.core.sample'
     appActivity = '.ChooseNetworkActivity'
     platformName = 'Android'
-    platformVersion = '4.2'
+    platformVersion = '5.0'
     deviceName = 'emulator-5554'
     server = 'http://127.0.0.1:4723/wd/hub'
 
@@ -133,8 +133,8 @@ class TestCases(unittest.TestCase):
         balanceLabel = self.findById('balance')
         self.assertEquals(balanceLabel.get_attribute('text'),'6000.0000000')
 
-        statusLable = self.findById('status')
-        self.assertEquals(statusLable.get_attribute('text'),'Activated')
+        # Verify account status changed
+        self.findByText('Activated')
 
         # Verify with horizon
         url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
@@ -209,7 +209,7 @@ class TestCases(unittest.TestCase):
         sendButton.click()
 
         # Verify that the transaction failed
-        errorDialog = self.findByText('Not enough kin to perform the transaction')
+        errorDialog = self.findByText('Not enough kin to perform the transaction.')
         okButton = self.driver.find_element_by_id('android:id/button1')
         okButton.click()
 
