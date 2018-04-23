@@ -17,7 +17,7 @@ class TestCases(unittest.TestCase):
     bundleId = 'com.kinfoundation.KinSampleApp'
     platformName = 'iOS'
     platformVersion = '11.2'
-    deviceName = 'iPhone 8'
+    deviceName = 'iPhone 8 Plus'
     server = 'http://127.0.0.1:4723/wd/hub'
 
     # Set up Appium and the app
