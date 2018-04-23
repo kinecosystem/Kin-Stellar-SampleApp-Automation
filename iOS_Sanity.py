@@ -23,9 +23,6 @@ class TestCases(unittest.TestCase):
     # Set up Appium and the app
     @classmethod
     def setUpClass(cls):
-        # Verify that horizon is up
-        if os.system('curl https://horizon-testnet.stellar.org') != 0:
-            quit()
         # Sample App should be already installed on the emulator
         cls.driver = webdriver.Remote(
             command_executor= TestCases.server,  # Run on local server
