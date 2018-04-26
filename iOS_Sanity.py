@@ -14,7 +14,8 @@ class TestCases(unittest.TestCase):
     qaAccount = 'GBDUPSZP4APH3PNFIMYMTHIGCQQ2GKTPRBDTPCORALYRYJZJ35O2LOBL'
 
     # Desired Capabilities:
-    bundleId = 'com.kinfoundation.KinSampleApp'
+    #bundleId = 'com.kinfoundation.KinSampleApp'
+    appPath = os.getcwd() + "../KinSampleApp/derivedData/Build/Products/Debug-iphonesimulator/KinSampleApp.app"
     platformName = 'iOS'
     platformVersion = '11.2'
     deviceName = 'iPhone 8 Plus'
@@ -27,7 +28,8 @@ class TestCases(unittest.TestCase):
         cls.driver = webdriver.Remote(
             command_executor= TestCases.server,  # Run on local server
             desired_capabilities={
-                'bundleId': TestCases.bundleId,
+                #'bundleId': TestCases.bundleId,
+                'app': TestCases.appPath,
                 'platformName': TestCases.platformName,
                 'platformVersion': TestCases.platformVersion,
                 'deviceName': TestCases.deviceName
