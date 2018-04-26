@@ -15,7 +15,7 @@ class TestCases(unittest.TestCase):
 
     # Desired Capabilities:
     #bundleId = 'com.kinfoundation.KinSampleApp'
-    appPath = os.getcwd() + "../KinSampleApp/derivedData/Build/Products/Debug-iphonesimulator/KinSampleApp.app"
+    appPath = os.getcwd() + "/../KinSampleApp/derivedData/Build/Products/Debug-iphonesimulator/KinSampleApp.app"
     platformName = 'iOS'
     platformVersion = '11.2'
     deviceName = 'iPhone 8 Plus'
