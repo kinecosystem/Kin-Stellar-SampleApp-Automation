@@ -26,6 +26,7 @@ Developed on Python  3.6
 Python dependencies:
 ```
 pip3 install Appium-Python-Client requests pytest
+pip3 install git+https://github.com/kinecosystem/kin-core-python
 ```
 In addition to these python packages, this following steps are needed:
 * Install Appium - [Download](https://github.com/appium/appium-desktop/releases/tag/v1.3.1)

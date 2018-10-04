@@ -4,6 +4,7 @@ import time
 import requests
 import json
 import os
+from account_creator import create_activated_account, create_no_trust_account 
 
 """
 TODO: Wait for sample app to complete in order to actually test
@@ -12,14 +13,16 @@ class TestCases(unittest.TestCase):
     # vars
     myAddress = ''
     badAddress = ''
-    noTrustAddress = 'GANFGTTCZL3D477BSCPR4RMUCX6RLERFUMOKZQYWK22ZFECZ3C7WXIZK'
-    qaAccount = 'GBDUPSZP4APH3PNFIMYMTHIGCQQ2GKTPRBDTPCORALYRYJZJ35O2LOBL'
+    noTrustAddress = ''
+    qaAccount = ''
+    sdk_package_name = 'kin.core.sample'
+    kin_test_blockchain_url = 'https://horizon-playground.kininfrastructure.com'
 
     # Desired Capabilities - Change this to whatever you are using
     appPackage = 'kin.core.sample'
     appActivity = '.ChooseNetworkActivity'
     platformName = 'Android'
-    platformVersion = '5.0'
+    platformVersion = '8.0.0'
     deviceName = 'emulator-5554'
     server = 'http://127.0.0.1:4723/wd/hub'
 
@@ -27,9 +30,13 @@ class TestCases(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Verify that horizon is up
-        if os.system('curl https://horizon-testnet.stellar.org') != 0:
+        if os.system('curl ' + TestCases.kin_test_blockchain_url) != 0:
             quit()
+        
+        TestCases.noTrustAddress = create_no_trust_account()   
+        TestCases.qaAccount = create_activated_account() 
         # Sample App should be already installed on the emulator/device
+        os.system('adb shell pm clear ' + TestCases.sdk_package_name)
 
         cls.driver = webdriver.Remote(
             command_executor=TestCases.server,  # Run on local server
@@ -44,16 +51,16 @@ class TestCases(unittest.TestCase):
         cls._values = []
         # Timeout for element searching
         # Official documentation says its in millisecond, but it actually works in seconds for me
-        cls.driver.implicitly_wait(10)
+        cls.driver.implicitly_wait(10)              
 
     # Called when the test run is over
     @classmethod
     def tearDownClass(cls):
         # Clear all data and close the app
-        os.system('adb shell pm clear kin.sdk.core.sample')
+        os.system('adb shell pm clear ' + TestCases.sdk_package_name)
 
     def findById(self,id):
-        return self.driver.find_element_by_id('kin.core.sample:id/'+id)
+        return self.driver.find_element_by_id(TestCases.sdk_package_name + ':id/'+id)
 
     def findByText(self,text):
         # yes, this is the right syntax
@@ -94,7 +101,7 @@ class TestCases(unittest.TestCase):
 
 
         # Verify on horizon that the account does not exist:
-        url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
+        url = '{}/accounts/{}'.format(TestCases.kin_test_blockchain_url, TestCases.myAddress)
         response = requests.get(url)
         self.assertEquals(response.status_code,404)
 
@@ -124,7 +131,7 @@ class TestCases(unittest.TestCase):
 
     def test_4_Onboarding(self):
         # Verify that the Get Kin button exists
-        getKinButton = self.findById('get_kin_btn')
+        getKinButton = self.findById('onboard_btn')
         getKinButton.click()
         # Wait enough time for the transaction to go through
         time.sleep(20)
@@ -137,7 +144,7 @@ class TestCases(unittest.TestCase):
         self.findByText('Activated')
 
         # Verify with horizon
-        url = 'https://horizon-testnet.stellar.org/accounts/{}'.format(TestCases.myAddress)
+        url = '{}/accounts/{}'.format(TestCases.kin_test_blockchain_url, TestCases.myAddress)
         response = json.loads(requests.get(url).text)
         balances = response['balances']
         self.assertEquals(balances[0]['balance'], '6000.0000000')
